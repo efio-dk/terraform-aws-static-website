@@ -1,0 +1,23 @@
+name: Reviewdog
+on: [pull_request]
+jobs:
+  Reviewdog:
+    name: Reviewdog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: tfsec
+        uses: reviewdog/action-tfsec@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          level: info # Get more output from reviewdog
+          reporter: github-pr-review # Change reviewdog reporter
+          filter_mode: nofilter # Check all files, not just the diff
+          fail_on_error: true # Fail action if errors are found
+      - name: tflint
+        uses: reviewdog/action-tflint@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review # Optional. Change reporter
+          fail_on_error: "true" # Optional. Fail action if errors are found
+          filter_mode: "nofilter" # Optional. Check all files, not just the diff
