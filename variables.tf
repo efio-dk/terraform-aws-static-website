@@ -84,7 +84,7 @@ variable "cf_dist_comment" {
 variable "cf_allowed_methods" {
   type        = list(string)
   description = "List of allowed methods on Cloudfront distribution"
-  default     = ["GET", "HEAD", "OPTIONS", "POST"]
+  default     = ["GET", "HEAD", "OPTIONS"]
 }
 
 variable "cf_cached_methods" {
