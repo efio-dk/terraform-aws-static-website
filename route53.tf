@@ -5,7 +5,7 @@ data "aws_route53_zone" "this" {
 
 resource "aws_route53_record" "this" {
   for_each = toset(var.FQDNs)
-  name     = format("images.%s", each.value)
+  name     = each.value
   zone_id  = data.aws_route53_zone.this.zone_id
   type     = "A"
 
