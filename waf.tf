@@ -1,5 +1,6 @@
 # TODO :: configurable WAF rules in the making
 resource "aws_wafv2_web_acl" "this" {
+  provider    = aws.us_east_1
   name        = local.waf_name
   description = local.waf_description
   scope       = "CLOUDFRONT"
