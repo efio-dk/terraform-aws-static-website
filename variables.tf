@@ -38,6 +38,12 @@ variable "enable_access_logs_versioning" {
   default     = true
 }
 
+variable "iam_policy_path" {
+  type        = string
+  description = "path of IAM policy"
+  default     = "/"
+}
+
 ###
 # Bring your own...
 # Allows you to use pre-provisioned resources
