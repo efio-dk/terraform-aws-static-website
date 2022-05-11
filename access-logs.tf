@@ -23,24 +23,6 @@ resource "aws_s3_bucket" "access_logs" {
   }
 }
 
-data "aws_iam_policy_document" "access_logs_bucket_policy" {
-  statement {
-    actions   = ["s3:PutObject"]
-    resources = [format("%s/*", one(aws_s3_bucket.access_logs[*].arn))]
-
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.this.iam_arn]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "access_logs" {
-  count  = var.byo_logs_bucket != null ? 0 : 1
-  bucket = one(aws_s3_bucket.access_logs[*].id)
-  policy = data.aws_iam_policy_document.bucket_policy.json
-}
-
 resource "aws_s3_bucket_public_access_block" "access_logs" {
   bucket              = one(aws_s3_bucket.access_logs[*].id)
   block_public_acls   = true

@@ -15,7 +15,7 @@ resource "aws_cloudfront_distribution" "this" {
   comment             = coalesce(var.cf_dist_comment, local.site_name)
   default_root_object = var.index_document
   aliases             = var.FQDNs
-  web_acl_id          = aws_wafv2_web_acl.this.id
+  web_acl_id          = aws_wafv2_web_acl.this.arn
 
   dynamic "logging_config" {
     for_each = compact([var.byo_logs_bucket])
