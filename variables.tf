@@ -149,6 +149,12 @@ variable "waf_sampled_requests_enabled" {
   default     = false
 }
 
+variable "waf_default_action" {
+  type        = string
+  description = "Set the default action on WAF Web ACL. Must be one of 'allow' or 'block'."
+  default     = "allow"
+}
+
 ###
 # Naming overrides
 variable "access_logs_bucket_name_override" {
