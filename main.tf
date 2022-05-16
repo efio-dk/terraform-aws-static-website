@@ -24,6 +24,7 @@ locals {
   cloudfront_origin_comment = coalesce(var.cf_origin_comment_override, format("%s website", var.domain_name))
   waf_name                  = coalesce(var.waf_name_override, replace(local.site_name, ".", ""))
   waf_description           = coalesce(var.waf_description_override, format("%s website", var.domain_name))
+  cf_function_arn           = !var.cf_enable_default_behavior_func ? "" : coalesce(var.byo_cf_function_arn, aws_cloudfront_function.url_rewrite.arn)
 
   tags = merge({
     Terraform-module = "efio-dk/terraform-aws-static-website"

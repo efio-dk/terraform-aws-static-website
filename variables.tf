@@ -59,6 +59,12 @@ variable "byo_certificate_arn" {
   default     = null
 }
 
+variable "byo_cf_function_arn" {
+  type        = string
+  description = "Providing an ARN for a Cloudfront function here, will apply that to the default cache behavior, instead of the module default."
+  default     = null
+}
+
 ###
 # Access logs
 variable "enable_s3_access_logs" {
@@ -115,6 +121,18 @@ variable "cf_minimum_tls_proto_version" {
   type        = string
   description = "Minimum TLS protocol version"
   default     = "TLSv1.2_2021"
+}
+
+variable "cf_enable_default_behavior_func" {
+  type        = bool
+  description = "Enable cloudfront function in default cache behavior. By default the enabled function will add '/index.html' to URIs if it is missing. But you can provide your own function, See variable: _byo_cf_function_arn_"
+  default     = true
+}
+
+variable "cf_default_function_event" {
+  type        = string
+  description = "Event type to which Cloudfront function of the default behavior is applied. One of 'viewer-request' or 'viewer-response'. Only change this if you bring your own function, supposed to be applied at the response"
+  default     = "viewer-request"
 }
 
 ###

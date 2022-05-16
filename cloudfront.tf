@@ -44,6 +44,14 @@ resource "aws_cloudfront_distribution" "this" {
     min_ttl                = 0
     default_ttl            = 86400  # 24 hours
     max_ttl                = 604800 # 7 days
+
+    dynamic "function_association" {
+      for_each = compact([local.cf_function_arn])
+      content {
+        event_type   = var.cf_default_function_event
+        function_arn = local.cf_function_arn
+      }
+    }
   }
 
   restrictions {
@@ -63,4 +71,12 @@ resource "aws_cloudfront_distribution" "this" {
 
 resource "aws_cloudfront_origin_access_identity" "this" {
   comment = coalesce(var.cf_origin_comment_override, local.cloudfront_origin_comment)
+}
+
+resource "aws_cloudfront_function" "url_rewrite" {
+  name    = "add-index-to-uri"
+  runtime = "cloudfront-js-1.0"
+  comment = "Add '/index.html' to URI if it is missing"
+  publish = var.cf_enable_default_behavior_func && var.byo_cf_function_arn == null
+  code    = file("${path.module}/functions/url-rewrite.js")
 }
