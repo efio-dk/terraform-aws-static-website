@@ -74,9 +74,13 @@ resource "aws_cloudfront_origin_access_identity" "this" {
 }
 
 resource "aws_cloudfront_function" "url_rewrite" {
-  name    = "add-index-to-uri"
+  name    = format("%s-add-index-to-uri", local.site_name)
   runtime = "cloudfront-js-1.0"
   comment = "Add '/index.html' to URI if it is missing"
   publish = var.cf_enable_default_behavior_func && var.byo_cf_function_arn == null
   code    = file("${path.module}/functions/url-rewrite.js")
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
